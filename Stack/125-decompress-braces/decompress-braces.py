@@ -1,24 +1,20 @@
-def decompress_braces(string):
-    stack = []
-    result = ""
+def decompress_braces(s):
+  stack = []
 
-    for char in string:
-        if char == "{":
-            continue
+  for char in s:
+    if char not in ["{", "}"]:
+      stack.append(char)
+    elif char == "}":
+      sub_stack = []
+      while True:
+        last_element = stack.pop()
+        sub_stack.append(last_element)
 
-        elif char == "}":
-            count = int(stack[0])
-            segment = ''.join(stack[1:])
-            result += count * segment
-            stack = []
+        if last_element.isdigit():
+          break
 
-        elif char.isdigit():
-            stack.append(char)
+      stack.append(int(sub_stack[-1]) * "".join(sub_stack[-2:-1:-1]))
 
-        else:
-            if stack and stack[0].isdigit():
-                stack.append(char)
-            else:
-                result += char
+      print(stack)
 
-    return result
+  return "".join(stack)
